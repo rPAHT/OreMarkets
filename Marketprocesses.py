@@ -1,5 +1,9 @@
 __author__ = 'Grant Colasurdo'
 
+import sqlite3
+conn = sqlite3.connect('Market.db')
+c = conn.cursor()
+
 def CalculateMargin(ItemID, MarketID, Pilot):
     '''
     Ok so first we have to lookup the buy and sell prices of the item at that market
@@ -11,9 +15,8 @@ def CalculateMargin(ItemID, MarketID, Pilot):
     sellprice = 0
 
 
-def CalcTax(Pilot, MarketID):
 
-def CalcBrokerFee(Pilot, MarketID):
+def calcbrokerfee(Pilot, MarketID):
     '''
     :param Pilot: This should be a Pilot object that describes the pilot being used
     this simulation
@@ -52,8 +55,8 @@ def FactionLookup(MarketID):
 
     We need something to the effect of SELECT Faction FROM StationTable with StationID = MarketID
     '''
-    tmp = SQLQueryresult
-    if len(tmp) = 0:
+    tmp = c.execute("SELECT faction from StationList WHERE stationid=?", marketid)
+    if len(tmp) == 0:
         return tmp
     else:
         raise Exception('Station not found from MarketID provided')
