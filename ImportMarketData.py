@@ -5,6 +5,7 @@ import urllib.parse
 import urllib.error
 import shutil
 import gzip
+import mysql.connector
 import os
 
 
@@ -33,3 +34,5 @@ for dfile in nightlylist:
         shutil.copyfileobj(unpack, file_name)
 
 
+cnx = mysql.connector.connect(user='grant', password='Warhammer',
+                              host='127.0.0.1', database='static')

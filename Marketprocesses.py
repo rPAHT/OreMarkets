@@ -41,22 +41,22 @@ def CalcTax(Pilot):
     Tax = .015*(.1*Pilot.sk.Accounting)
     return Tax
 
-def CorpLookup(Pilot):
+def corplookup(Pilot):
     '''
     :param Pilot: The Pilot Object that is being used for the simulation
     :return: Returns either the Corp Name or something else I don't know yet
     '''
     return Pilot.Corp
 
-def FactionLookup(MarketID):
+def factionlookup(marketID):
     '''
     :param MarketID:This is the ID of the station we are trying to lookup from the DB
     :return:
 
     We need something to the effect of SELECT Faction FROM StationTable with StationID = MarketID
     '''
-    tmp = c.execute("SELECT faction from StationList WHERE stationid=?", marketid)
-    if len(tmp) == 0:
+    tmp = c.execute("SELECT faction from StationList WHERE stationid=?", marketID)
+    if len(tmp) == 1:
         return tmp
     else:
         raise Exception('Station not found from MarketID provided')

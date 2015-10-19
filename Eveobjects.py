@@ -1,9 +1,5 @@
 __author__ = 'Grant Colasurdo'
 
-import sqlite3
-
-conn = sqlite3.connect('static.db')
-c = conn.cursor()
 
 class Item:
     def __init__(self, idnum):
@@ -34,4 +30,5 @@ class Corporation:
 class Ore:
     def __init__(self, idnum):
         self.idnum = idnum
-        #he we do lookups of the different ores
+        # here we do lookups of the different ores
+
