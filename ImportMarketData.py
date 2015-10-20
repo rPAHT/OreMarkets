@@ -25,7 +25,7 @@ for dfile in nightlylist:
 
     url = weburl + dfile
     file_name = dire + dfile
-    comp_name = file_name[:url.rfind(".")+1]
+    comp_name = file_name[:file_name.rfind(".")]
     print("downloading " + url[url.rfind("/") + 1:])
     with urllib.request.urlopen(url) as response, open(file_name, 'wb') as out_file, open(comp_name, 'wb') as comp_file:
         print("Unpacking " + file_name + " ...")
