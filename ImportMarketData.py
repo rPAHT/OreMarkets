@@ -1,8 +1,6 @@
 __author__ = 'Grant Colasurdo'
 
-import urllib.request
-import urllib.parse
-import urllib.error
+import urllib
 import shutil
 import gzip
 import mysql.connector
@@ -22,16 +20,13 @@ nightlylist = ["mysql_eve_inv_types.txt.gz", "mysql_items_buying.txt.gz", "mysql
 
 dire = "C:\\Users\Grant Colasurdo\PycharmProjects\Eve\OreMarkets\MarketDumps\\"
 for dfile in nightlylist:
-
     url = weburl + dfile
     file_name = dire + dfile
     comp_name = file_name[:file_name.rfind(".")]
     print("downloading " + url[url.rfind("/") + 1:])
-    with urllib.request.urlopen(url) as response, open(file_name, 'wb') as out_file, open(comp_name, 'wb') as comp_file:
-        print("Unpacking " + file_name + " ...")
-        shutil.copyfileobj(response, comp_name)
-        unpack = gzip.open(comp_name)
-        shutil.copyfileobj(unpack, file_name)
+    urllib.request.urlretrieve(url, comp_name)
+    unpack = gzip.open(comp_name)
+    shutil.copyfileobj(unpack, file_name)
 
 
 cnx = mysql.connector.connect(user='grant', password='Warhammer',

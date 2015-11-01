@@ -1,73 +1,122 @@
-__author__ = 'Grant Colasurdo'
 import numpy as np
+__author__ = 'rPAHT'
 
-class Item:
-    def __init__(self, idnum):
-        self.id = idnum
 
 
 class Pilot:
-    def __init__(self, skills, charid):
+    def __init__(self, skills, char_id):
         self.sk = skills
-        self.id = charid
-        
-
-class Ship:
-    def __init__(self, idnum):
-        self.id = idnum
+        self.id = char_id
 
 
-class Module:
-    def __init__(self, idnum):
-        self.id = idnum
+class Skill:
+    def __init__(
+            self, primary_attribute, secondary_attribute,
+            training_time_multiplier, required_skills=None
+    ):
+        self.primary_attribute = primary_attribute
+        self.secondary_attribute = secondary_attribute
+        self.training_time_multiplier = training_time_multiplier
+        if required_skills is None:
+            required_skills = []
+        self.required_skills = required_skills
+
+
+class Item:
+    def __init__(self, id_num):
+        self.id = id_num
+
+
+class Ship(Item):
+    def __init__(self, id_num):
+        Item.__init__(self, id_num)
+
+
+class Module(Item):
+    def __init__(self, id_num):
+        Item.__init__(self, id_num)
 
 
 class Corporation:
-    def __init__(self, idnum):
-        self.id = idnum
+    def __init__(self, corp_id):
+        self.corp_id = corp_id
 
 
-class Ore:
-    def __init__(self, idnum):
-        self.idnum = idnum
+class Ore(Item):
+    def __init__(self, id_num):
+        Item.__init__(self, id_num)
         # here we do lookups of the different ores
 
 
-class Blueprint:
-    def __init__(self, idnum):
+class Blueprint(Item):
+    def __init__(
+            self, id_num, item_rank=None, mat_eff=0, time_eff=0,  prod_id=None,
+            prod_skill_req=None, prod_base_time=None, prod_mat_reqs=None
+    ):
+        Item.__init__(self, id_num)
         # What item are we dealing with?
-        self.idnum = idnum
-        self.itemrank = None
+        self.item_rank = item_rank
         # How upgraded is the BP?
-        self.mateff = 0
-        self.timeeff = 0
+        self.mat_eff = mat_eff
+        self.time_eff = time_eff
         # How long does it take to upgrade?
-        self.matefftime = None
-        self.timeefftime = None
         # What can we make with it? and how do we make it?
-        self.prodid = None
-        self.prodskillreq = [None]
-        self.prodbasetime = None
-        self.prodmatreqs = {}
-        # Is this a copy or an original?
-        self.copy = False
+        self.prod_id = prod_id
+        if prod_skill_req is None:
+            prod_skill_req = []
+        self.prod_skill_req = prod_skill_req
+        self.prod_base_time = prod_base_time
+        if prod_mat_reqs is None:
+            prod_mat_reqs = []
+        self.prod_mat_reqs = prod_mat_reqs
         # What are the details on the copy?
-        self.basecopytime = None
-        self.maxruns = 0
-        self.runsleft = None
-        # Invention details
-        self.basesuccess = 0
-        self.baseinventtime = None
-        self.inventskillreq = [None]
-        self.inventmatreqs = {}
-        self.inventoptions = [None]
         pass
-
-    def researchmatefficency(self):
-            if 0 <= self.mateff < 10:
-                time = np.exp(self.mateff+5.37, 2.37869) * self.itemrank
-                self.mateff += 1
-
         # here we lookup the blueprint to find all the stuff that defines it
 
 
+class BPO(Blueprint):
+    def __init__(
+            self, id_num, mat_eff_time=None, time_eff_time=0, item_rank=None, mat_eff=0, time_eff=0,
+            prod_id=None, prod_skill_req=None, prod_base_time=None, prod_mat_reqs=None
+    ):
+        Blueprint.__init__(
+            id_num, item_rank,  mat_eff, time_eff, prod_id, prod_skill_req, prod_base_time, prod_mat_reqs
+        )
+        self.mat_eff_time = mat_eff_time
+        self.time_eff_time = time_eff_time
+
+    def research_mat_efficiency(self):
+            if 0 <= self.mat_eff < 10:
+                time = np.exp(self.mat_eff+5.37, 2.37869) * self.item_rank
+                self.mat_eff += 1
+                return time
+
+    def research_time_efficiency(self):
+        if 0 <= self.time_eff < 10:
+            time = np.exp(self.mat_eff+5.37, 237869)*self.item_rank
+            self.mat_eff += 1
+            return time
+
+
+class BPC(Blueprint):
+    def __init__(
+            self, id_num, item_rank=None, mat_eff=0, time_eff=0, prod_id=None,
+            prod_skill_req=None, prod_base_time=None, prod_mat_reqs=None,
+            base_copy_time=None, max_runs=None, runs_left=None, base_success=None,
+            base_invent_time=None, invent_skill_reqs=None, invent_mat_reqs=None,
+            invent_options=None
+    ):
+        Blueprint.__init__(
+            id_num, item_rank, mat_eff, time_eff, prod_id, prod_skill_req, prod_base_time,
+            prod_mat_reqs
+        )
+        self.base_copy_time = base_copy_time
+        self.max_runs = max_runs
+        self.runs_left = runs_left
+        # Invention details
+        self.base_success = base_success
+        self.base_invent_time = base_invent_time
+        self.invent_skill_req = invent_skill_reqs
+        self.invent_mat_reqs = invent_mat_reqs
+        self.invent_options = invent_options
+        pass
