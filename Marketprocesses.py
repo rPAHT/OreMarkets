@@ -21,20 +21,18 @@ def calc_broker_fee(pilot, station):
     """
     :param pilot: This should be a Pilot object that describes the pilot being used
     this simulation
-    :param market_ID: This should be the station that the transaction will be happening
+    :param station: This should be the station object
     :return: this should return a constant that represents the multiplier to attach to the
     market order
     """
-    broker_relations_skill_level = pilot.sk.BrokerSkillLevel
-    broker_faction = station.faction
+    broker_relations_skill_level = pilot.get_skill_level("Broker Relations")
+    broker_corp = station.corp
+    broker_faction = broker_corp.faction.faction_id
     faction_standing = pilot.standing_lookup(broker_faction)
-    pilot_corp = pilot.corp
-    corporation_standing = pilot_corp.standing_lookup(broker_faction)
+    corporation_standing = pilot.standing_lookup(broker_corp)
 
     broker_fee = (.01 - .0005 * broker_relations_skill_level) / (
                  2 ** (.1400 * faction_standing + .06000 * corporation_standing))
-    if broker_fee < 100:
-        broker_fee = 100
     return broker_fee
 
 
@@ -43,14 +41,14 @@ def calc_tax(pilot):
     return tax
 
 
-def faction_lookup(market_ID):
+def faction_lookup(market_id):
     """
-    :param market_ID:This is the ID of the station we are trying to lookup from the DB
+    :param market_id:This is the ID of the station we are trying to lookup from the DB
     :return:
 
     We need something to the effect of SELECT Faction FROM StationTable with StationID = MarketID
     """
-    tmp = c.execute("SELECT faction from StationList WHERE station_id=?", market_ID)
+    tmp = c.execute("SELECT faction from StationList WHERE station_id=?", market_id)
     if len(tmp) == 1:
         return tmp
     else:

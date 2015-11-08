@@ -1,4 +1,5 @@
 import numpy as np
+import sqlite3 as sql
 __author__ = 'rPAHT'
 
 
@@ -26,6 +27,12 @@ class Item:
     def __init__(self, id_num):
         self.id = id_num
 
+    def sql_lookup_connector(self):
+       """
+       
+       :return: the connector to the sqlite db pointed at the item
+       """
+
 
 class Ship(Item):
     def __init__(self, id_num):
@@ -38,9 +45,33 @@ class Module(Item):
 
 
 class Corporation:
-    def __init__(self, corp_id):
+    def __init__(
+            self, corp_id, corp_name=None, corp_ticker=None, corp_alliance=None,
+            corp_ceo=None, corp_member_list=None, corp_url=None, corp_tax_rate=None
+    ):
         self.corp_id = corp_id
+        self.corp_name = corp_name
+        self.ticker = corp_ticker
+        self.alliance = corp_alliance
+        self.ceo = corp_ceo
+        if corp_member_list is None:
+            corp_member_list = []
+        self.member_list = corp_member_list
+        self.url = corp_url
+        self.tax_rate = corp_tax_rate
 
+
+class Alliance:
+    def __init__(self, alliance_name, alliance_ticker):
+        self.alliance_name = alliance_name
+        self.alliance_ticker = alliance_ticker
+        self.alliance_members = []
+
+    def add_corp(self, corp):
+        self.alliance_members.append(corp)
+
+    def remove_corp(self, corp):
+        self.alliance_members.remove(corp)
 
 class Ore(Item):
     def __init__(self, id_num):
