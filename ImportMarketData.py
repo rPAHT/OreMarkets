@@ -1,4 +1,4 @@
-__author__ = 'Grant Colasurdo'
+__author__ = 'rPAHT'
 
 import urllib
 import shutil

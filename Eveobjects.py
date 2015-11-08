@@ -3,7 +3,6 @@ import sqlite3 as sql
 __author__ = 'rPAHT'
 
 
-
 class Pilot:
     def __init__(self, skills, char_id):
         self.sk = skills
@@ -28,10 +27,11 @@ class Item:
         self.id = id_num
 
     def sql_lookup_connector(self):
-       """
-       
-       :return: the connector to the sqlite db pointed at the item
-       """
+        """
+
+        :return: the connector to the sqlite db pointed at the item
+        """
+        self.c = sql.connect('items.db')
 
 
 class Ship(Item):
@@ -72,6 +72,7 @@ class Alliance:
 
     def remove_corp(self, corp):
         self.alliance_members.remove(corp)
+
 
 class Ore(Item):
     def __init__(self, id_num):

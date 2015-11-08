@@ -1,15 +1,17 @@
-__author__ = 'Grant Colasurdo'
+import sqlite3
+__author__ = 'rPAHT'
 
 '''
-Here we list the many processes that objects can go though in their way thoguh the industrial
+Here we list the many processes that objects can go though in their way through the industrial
 chain
 
 We have refining, research, invention, manufacturing and
 '''
 
-import sqlite3
+
 conn = sqlite3.connect('indy.db')
 c = conn.cursor()
+
 
 def yld(self, pilot, item, station):
     """
@@ -29,6 +31,6 @@ def yld(self, pilot, item, station):
     pass
 
 
-def stationlookup(stationid):
+def station_lookup(stationid):
     c.execute('')
 

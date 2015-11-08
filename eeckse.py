@@ -1,5 +1,7 @@
-__author__ = 'Grant Colasurdo'
 from tkinter import *
+
+__author__ = 'rPAHT'
+
 
 class App:
 

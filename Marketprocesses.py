@@ -6,7 +6,7 @@ conn = sqlite3.connect('Market.db')
 c = conn.cursor()
 
 
-def calculate_margin(item_ID, market_ID, pilot):
+def calculate_margin(item_id, market_ID, pilot):
     """
     Ok so first we have to lookup the buy and sell prices of the item at that market
     something to the effect of:
